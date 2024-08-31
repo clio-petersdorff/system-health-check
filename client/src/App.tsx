@@ -4,7 +4,7 @@ import Pusher from 'pusher-js';
 
 const App: React.FC = () => {
   // const [message, setMessage] = useState<string>("");
-  const [data, setData] = useState<string | null>(null);
+  const [data, setData] = useState<object>({});
 
   const pusherKey = import.meta.env.VITE_PUSHER_KEY
   
@@ -16,8 +16,8 @@ const App: React.FC = () => {
 
     const channel = pusher.subscribe('my-channel');
 
-    channel.bind('status-update', (data:any) => {
-      setData(data); // Update state with new data
+    channel.bind('status-update', (update:object) => {
+      setData(update); // Update state with new data
     });
 
     // Cleanup
@@ -29,8 +29,8 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Pusher Message</h1>
-      <pre>{data ? data : 'Waiting for data...'}</pre>
+      <h1>System health</h1>
+      <pre>{data ? JSON.stringify(data, null, 2) : 'Waiting for data...'}</pre>
     </div>
   );
 };

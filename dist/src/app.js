@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
 });
 import Pusher from "pusher";
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+dotenv.config();
 const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID,
     key: process.env.PUSHER_KEY,
@@ -30,11 +32,11 @@ app.get('/status', (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     console.log('Fetching data...');
     try {
         const response = yield fetch('https://data--us-east.upscope.io/status?stats=1');
-        console.log(response);
         const data = yield response.json();
+        console.log(data.results);
         // Trigger Pusher event with the fetched data
         pusher.trigger('my-channel', 'status-update', data);
-        res.status(200).send('Data fetched and pushed to Pusher!');
+        res.status(200).send('Data pushed');
     }
     catch (e) {
         res.status(500).send({ error: e.message });
