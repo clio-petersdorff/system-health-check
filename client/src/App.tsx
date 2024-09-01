@@ -108,14 +108,6 @@ const App: React.FC = () => {
         <li> <img alt='wait-time-icon' style={{ width: 15 }} src={String(wait)}/> Wait time: {wait_time ?? 'waiting for update'}</li>
         <li> <img alt='cpu-icon' style={{ width: 15 }} src={String(cpu)}/> CPU load time: {cpu_load ?? 'waiting for update'}</li>
       </ul>
-      {/* <div>
-        <p>CPU Load History:</p>
-        <ul>
-          {cpuHistory.map((value, index) => (
-            <li key={index}>{index + 1}: {value}</li>
-          ))}
-        </ul>
-      </div> */}
     </div>
     
   );
@@ -130,19 +122,12 @@ const App: React.FC = () => {
       {results?.stats?.server && <ServerStats {...results.stats.server} cpuHistory={cpuHistory} />}
       {        
       <Plot 
-       data={[{ x: [1, 2, 3, 4, 5], y: cpuHistory }]}
-       layout={{width: 300, height: 250, title: "CPU history" }}
+       data={[{ x:[1, 2, 3, 4,5], y: cpuHistory, marker: {color: '#8d5af5'}}]}
+       layout={{width: 200, height: 150, title: "CPU history", "xaxis": {"visible": false}, margin:{t:30, b:10,l:40, r:10}}}
      />
      }
     </div>
   );
-
-  // Data to plot CPU history
-  // const [cpuPlotData, setCpuPlotData] = useState<number[]>({
-  //   x: cpuHistories['us-east'],
-  //   y: [0, 1, 2, 3, 4, 5]
-  // });
-
 
   // Main Dashboard Component
   return (
@@ -164,8 +149,12 @@ const App: React.FC = () => {
 
       </div>
       <div className='statusMessage'>
-        {
-          <h2> All systems ok</h2>
+        { Object.keys(data).length === 0 ? <h2>Data loading</h2> :
+          Object.keys(data).every((region:string)=>( 
+            data[region]?.status === 'ok'
+          )) ?
+          <h2>All systems okay</h2> :
+          <h2>Attention needed</h2>
         }
       </div>
     </div>
