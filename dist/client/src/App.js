@@ -20,7 +20,10 @@ const App = () => {
             channel.unsubscribe();
         };
     }, []);
-    return (_jsxs("div", { children: [_jsx("h1", { children: "Pusher Message" }), _jsx("pre", { children: data ? JSON.stringify(data, null, 2) : 'Waiting for data...' })] }));
+    return (_jsxs("div", { children: [_jsx("h1", { children: "System health" }), _jsx("div", { id: 'dashboard', children: Object.keys(data).map(region => {
+                    var _a, _b;
+                    return (_jsxs("div", { children: [_jsxs("h3", { id: 'regionHeader', children: [region, " data:"] }), _jsxs("div", { children: [_jsxs("p", { children: ["Status: ", ((_a = data[region]) === null || _a === void 0 ? void 0 : _a.status) || 'waiting for status'] }), _jsxs("p", { children: ["Services: ", ((_b = data[region]) === null || _b === void 0 ? void 0 : _b.services) || 'waiting for services'] })] }), _jsx("pre", { children: JSON.stringify(data[region], null, 2) })] }, region));
+                }) })] }));
 };
 export default App;
 //# sourceMappingURL=App.js.map
