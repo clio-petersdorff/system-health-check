@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Pusher from 'pusher-js';
+import Plot from "react-plotly.js";
+
 import './App.css'
+
+
+// images
+import wait from './assets/time-left.png';
+import cpu from './assets/cpu.png';
+import connection from './assets/global-network.png';
+
 
 // Define the types for data structure
 interface Services {
@@ -67,7 +76,7 @@ const App: React.FC = () => {
             }
           }
         }
-
+        console.log(updatedHistories)
         return updatedHistories;
     });
   })
@@ -95,18 +104,18 @@ const App: React.FC = () => {
     <div className= 'resultsChunk'>
       <p><span style={{'fontWeight':'bold'}}>Server:</span></p>
       <ul>
-        <li><img src='./assets/global-network.png'/> Active connections: {active_connections ?? 'waiting for update'}</li>
-        <li> <img src='./assets/time-left.png'/> Wait time: {wait_time ?? 'waiting for update'}</li>
-        <li> <img src='./assets/cpu.png'/> CPU load time: {cpu_load ?? 'waiting for update'}</li>
+        <li><img alt='active-connections-icon' style={{ width: 15 }} src={String(connection)}/> Active connections: {active_connections ?? 'waiting for update'}</li>
+        <li> <img alt='wait-time-icon' style={{ width: 15 }} src={String(wait)}/> Wait time: {wait_time ?? 'waiting for update'}</li>
+        <li> <img alt='cpu-icon' style={{ width: 15 }} src={String(cpu)}/> CPU load time: {cpu_load ?? 'waiting for update'}</li>
       </ul>
-      <div>
+      {/* <div>
         <p>CPU Load History:</p>
         <ul>
           {cpuHistory.map((value, index) => (
             <li key={index}>{index + 1}: {value}</li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
     
   );
@@ -119,9 +128,21 @@ const App: React.FC = () => {
       </div>
       {results?.services && <Services {...results.services} />}
       {results?.stats?.server && <ServerStats {...results.stats.server} cpuHistory={cpuHistory} />}
-      {}
+      {        
+      <Plot 
+       data={[{ x: [1, 2, 3, 4, 5], y: cpuHistory }]}
+       layout={{width: 300, height: 250, title: "CPU history" }}
+     />
+     }
     </div>
   );
+
+  // Data to plot CPU history
+  // const [cpuPlotData, setCpuPlotData] = useState<number[]>({
+  //   x: cpuHistories['us-east'],
+  //   y: [0, 1, 2, 3, 4, 5]
+  // });
+
 
   // Main Dashboard Component
   return (
@@ -140,6 +161,7 @@ const App: React.FC = () => {
             />
           </div>
         ))}
+
       </div>
       <div className='statusMessage'>
         {
