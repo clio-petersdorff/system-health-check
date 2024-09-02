@@ -1,7 +1,7 @@
 import express from 'express';
 import Pusher from "pusher";
 import axios from 'axios';
-
+import serverless from "serverless-http";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -62,5 +62,4 @@ const checkEndpointAndPush = async () => {
 setInterval(checkEndpointAndPush, 3000);
 
 
-
- 
+export const handler = serverless(app);
