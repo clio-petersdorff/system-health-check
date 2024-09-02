@@ -57,18 +57,4 @@ const checkEndpointAndPush = () => __awaiter(void 0, void 0, void 0, function* (
 });
 // Set an interval to check the endpoint and send updates every 3 seconds
 setInterval(checkEndpointAndPush, 3000);
-// // fetch data from api
-// app.get('/status/:', async (req, res) => {
-//     console.log('Fetching data...')
-//     try {
-//         const response = await fetch('https://data--us-east.upscope.io/status?stats=1')
-//         const data = await response.json()
-//         console.log(data.results)
-//         // Trigger Pusher event with the fetched data
-//         pusher.trigger('my-channel', 'status-update', data);
-//         res.status(200).send('Data pushed');
-//     } catch(e){
-//         res.status(500).send({error: e.message})
-//     }
-// })
 //# sourceMappingURL=app.js.map
