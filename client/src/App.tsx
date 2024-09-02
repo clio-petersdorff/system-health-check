@@ -128,11 +128,16 @@ const App: React.FC = () => {
        data={[{ x:[...Array(cpuHistory.length).keys()], y: cpuHistory, marker: {color: '#8d5af5'}}]}
        layout={
         { width: 200, 
-          height: 150, 
-          title: "CPU history", 
+          height: 180, 
+          title: {
+            text:"CPU history",
+            font: {
+              size: 12
+            },
+          },
           "xaxis": {"visible": false},
-          "yaxis": {range:[0,1]}, 
-          margin:{t:30, b:10,l:40, r:10}
+          "yaxis": {range:[0,1], tickfont:{size:10}}, 
+          margin:{t:30, b:10,l:20, r:10}
         }
       }
      />
