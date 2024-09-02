@@ -5,7 +5,7 @@ import Plot from "react-plotly.js";
 import './App.css'
 
 
-// images
+// Load icons
 import wait from './assets/time-left.png';
 import cpu from './assets/cpu.png';
 import connection from './assets/global-network.png';
@@ -165,7 +165,7 @@ const App: React.FC = () => {
 
       </div>
       <div className='statusMessage'>
-        { Object.keys(data).length === 0 ? <h2>Data loading</h2> :
+        { Object.keys(data).length === 0 ? <h2>Data loading ... </h2> :
           Object.keys(data).every((region:string)=>( 
             data[region]?.status === 'ok'
           )) ?
