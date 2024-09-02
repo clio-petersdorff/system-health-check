@@ -1,6 +1,5 @@
 {
     "version": 2,
-    "buildCommand": "npm start && cd client && npm run build",
     "builds": [
         {
             "src": "*.js",
