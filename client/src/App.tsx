@@ -71,7 +71,7 @@ const App: React.FC = () => {
             updatedHistories[region].push(newCpuLoad);
 
             // Ensure history does not exceed 5 data points
-            if (updatedHistories[region].length > 5) {
+            if (updatedHistories[region].length > 10) {
               updatedHistories[region].shift(); // Remove the oldest data point
             }
           }
@@ -100,13 +100,16 @@ const App: React.FC = () => {
   );
 
   // ServerStats Component to render server statistics
-  const ServerStats: React.FC<ServerStats& { cpuHistory: number[] }> = ({ active_connections, wait_time, cpu_load, cpuHistory }) => (
+  const ServerStats: React.FC<ServerStats& { cpuHistory: number[] }> = ({ active_connections, wait_time, cpu_load }) => (
     <div className= 'resultsChunk'>
       <p><span style={{'fontWeight':'bold'}}>Server:</span></p>
       <ul>
-        <li><img alt='active-connections-icon' style={{ width: 15 }} src={String(connection)}/> Active connections: {active_connections ?? 'waiting for update'}</li>
+        <li ><img alt='active-connections-icon' style={{ width: 15 }} src={String(connection)}/> Active connections: {active_connections ?? 'waiting for update'}</li>
         <li> <img alt='wait-time-icon' style={{ width: 15 }} src={String(wait)}/> Wait time: {wait_time ?? 'waiting for update'}</li>
-        <li> <img alt='cpu-icon' style={{ width: 15 }} src={String(cpu)}/> CPU load time: {cpu_load ?? 'waiting for update'}</li>
+        <li style={{color: cpu_load !== undefined && cpu_load > 0.7 ? 'red' : undefined}}> 
+          <img alt='cpu-icon' style={{ width: 15 }} src={String(cpu)}/> 
+          CPU load time: {cpu_load ?? 'waiting for update'}
+        </li>
       </ul>
     </div>
     
@@ -122,8 +125,16 @@ const App: React.FC = () => {
       {results?.stats?.server && <ServerStats {...results.stats.server} cpuHistory={cpuHistory} />}
       {        
       <Plot 
-       data={[{ x:[1, 2, 3, 4,5], y: cpuHistory, marker: {color: '#8d5af5'}}]}
-       layout={{width: 200, height: 150, title: "CPU history", "xaxis": {"visible": false}, margin:{t:30, b:10,l:40, r:10}}}
+       data={[{ x:[...Array(cpuHistory.length).keys()], y: cpuHistory, marker: {color: '#8d5af5'}}]}
+       layout={
+        { width: 200, 
+          height: 150, 
+          title: "CPU history", 
+          "xaxis": {"visible": false},
+          "yaxis": {range:[0,1]}, 
+          margin:{t:30, b:10,l:40, r:10}
+        }
+      }
      />
      }
     </div>
